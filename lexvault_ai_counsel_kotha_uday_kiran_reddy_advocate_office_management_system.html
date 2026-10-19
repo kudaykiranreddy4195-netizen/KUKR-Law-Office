@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kotha Uday Kiran Reddy Advocate Office Management System | LexVault & AI Counsel</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              500: '#334e68',
+              600: '#243b53',
+              700: '#102a43',
+              800: '#0b1b2b',
+              900: '#06101e',
+              gold: '#c5a059',
+              goldHover: '#b08c45',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons & Libraries -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+    
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif-legal { font-family: 'Playfair Display', serif; }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.4); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(197, 160, 89, 0.6); }
+
+    .print-drafting-paper {
+      background: white;
+      color: #1a1a1a;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      font-family: 'Playfair Display', Georgia, serif;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col overflow-hidden bg-slate-950 text-slate-100 antialiased selection:bg-brand-gold selection:text-slate-950">
+
+  <!-- TOP BRANDING & NAVIGATION HEADER -->
+  <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur-md sticky top-0 z-30 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Firm Logo / Name -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-gold to-amber-700 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-900/30">
+          <i data-lucide="scale" class="w-6 h-6 stroke-[2.2]"></i>
+        </div>
+        <div>
+          <h1 class="font-cinzel font-bold text-lg text-amber-100 tracking-wide leading-tight">
+            KOTHA UDAY KIRAN REDDY
+          </h1>
+          <p class="text-[11px] text-amber-400/80 tracking-widest uppercase font-medium">Advocate & Legal Consultant | LexVault & AI Counsel</p>
+        </div>
+      </div>
+
+      <!-- Center Nav Tabs -->
+      <nav class="hidden md:flex items-center space-x-1 bg-slate-950/60 p-1 rounded-xl border border-slate-800">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active-tab px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('cases')" id="nav-cases" class="nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all text-slate-400 hover:text-slate-200">
+          <i data-lucide="briefcase" class="w-4 h-4"></i>
+          <span>Case Posting & Ledger</span>
+        </button>
+        <button onclick="switchTab('causelist')" id="nav-causelist" class="nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all text-slate-400 hover:text-slate-200">
+          <i data-lucide="calendar" class="w-4 h-4"></i>
+          <span>Cause List</span>
+        </button>
+        <button onclick="switchTab('drafting')" id="nav-drafting" class="nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all text-slate-400 hover:text-slate-200">
+          <i data-lucide="file-signature" class="w-4 h-4"></i>
+          <span>Smart Drafting (BNSS/CrPC)</span>
+        </button>
+        <button onclick="switchTab('aicounsel')" id="nav-aicounsel" class="nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all text-slate-400 hover:text-slate-200">
+          <i data-lucide="bot" class="w-4 h-4 text-brand-gold"></i>
+          <span>AI Counsel Desk</span>
+        </button>
+      </nav>
+
+      <!-- Right Header Tools (Role Switcher, 1-Day Alert, Audit Modal) -->
+      <div class="flex items-center space-x-3">
+        
+        <!-- 1-Day Notification Bell -->
+        <button onclick="toggleNotificationModal()" class="relative p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="1-Day Upcoming Hearing Alerts">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span id="notification-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">2</span>
+        </button>
+
+        <!-- Role Selector (RBAC Simulation) -->
+        <div class="flex items-center space-x-1 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700">
+          <i data-lucide="shield-check" class="w-4 h-4 text-brand-gold"></i>
+          <select id="user-role-select" onchange="changeUserRole(this.value)" class="bg-transparent text-xs font-medium text-slate-200 focus:outline-none cursor-pointer">
+            <option value="Senior Counsel" class="bg-slate-900 text-slate-100">Senior Counsel (Uday Kiran Reddy)</option>
+            <option value="Associate Advocate" class="bg-slate-900 text-slate-100">Associate Advocate</option>
+            <option value="Junior Clerk" class="bg-slate-900 text-slate-100">Court Clerk / Staff</option>
+          </select>
+        </div>
+
+        <!-- Audit Log Trigger -->
+        <button onclick="toggleAuditModal()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition" title="View Audit Logs">
+          <i data-lucide="history" class="w-5 h-5"></i>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="flex-1 overflow-y-auto relative p-4 sm:p-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div class="max-w-7xl mx-auto h-full">
+
+      <!-- ================= TAB 1: DASHBOARD ================= -->
+      <section id="tab-dashboard" class="tab-content space-y-6">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-brand-700/40 to-slate-900 border border-brand-gold/30 p-6 sm:p-8">
+          <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-semibold mb-3">
+                <i data-lucide="gavel" class="w-3.5 h-3.5"></i>
+                <span>Telangana High Court & District Criminal Practice Active</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-serif-legal font-bold text-slate-100">
+                Welcome, Advocate Kotha Uday Kiran Reddy
+              </h2>
+              <p class="text-slate-400 text-sm mt-1 max-w-2xl">
+                Managing High Court Writs, Metropolitan Criminal Bails (BNSS/CrPC), Civil Suits, and Special Tribunal Matters across Telangana & All India Courts.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="openNewCaseModal()" class="bg-gradient-to-r from-brand-gold to-amber-600 hover:from-amber-500 hover:to-amber-700 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-lg shadow-md flex items-center space-x-2 transition">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Post New Case</span>
+              </button>
+              <button onclick="switchTab('drafting')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium text-xs px-4 py-2.5 rounded-lg flex items-center space-x-2 transition">
+                <i data-lucide="file-plus" class="w-4 h-4 text-brand-gold"></i>
+                <span>Quick Bail / Petition Draft</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex items-center space-x-4">
+            <div class="p-3 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/20">
+              <i data-lucide="briefcase" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Total Active Cases</p>
+              <p id="stat-total-cases" class="text-2xl font-bold text-slate-100">0</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex items-center space-x-4">
+            <div class="p-3 bg-rose-500/10 text-rose-400 rounded-lg border border-rose-500/20">
+              <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Bails & Criminal Petitions</p>
+              <p id="stat-criminal-cases" class="text-2xl font-bold text-rose-300">0</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex items-center space-x-4">
+            <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+              <i data-lucide="calendar-check" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Hearings Scheduled Today</p>
+              <p id="stat-today-hearings" class="text-2xl font-bold text-slate-100">0</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex items-center space-x-4">
+            <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Tomorrow's Priority Bails</p>
+              <p id="stat-tomorrow-hearings" class="text-2xl font-bold text-amber-300">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Split Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Upcoming Critical Bails & Urgent Matters -->
+          <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
+                <h3 class="font-bold text-slate-200 flex items-center space-x-2">
+                  <i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i>
+                  <span>Urgent Criminal Bails & Priority Listings</span>
+                </h3>
+                <span class="text-xs text-slate-400">BNSS & CrPC Matters Highlighted</span>
+              </div>
+              <div id="urgent-bails-container" class="space-y-3">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+            <div class="mt-4 text-right">
+              <button onclick="switchTab('causelist')" class="text-xs text-brand-gold hover:underline inline-flex items-center space-x-1">
+                <span>View Full Cause List Calendar</span>
+                <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Criminal Law Quick Actions & Statutory Reference -->
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 space-y-4">
+            <h3 class="font-bold text-slate-200 flex items-center space-x-2 pb-3 border-b border-slate-800">
+              <i data-lucide="book-open" class="w-4 h-4 text-brand-gold"></i>
+              <span>BNSS / CrPC Quick References</span>
+            </h3>
+            
+            <div class="space-y-2.5 text-xs">
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 transition">
+                <div class="font-semibold text-amber-300">Sec 483 BNSS (Sec 439 CrPC)</div>
+                <div class="text-slate-400 mt-0.5">Regular Bail before High Court / Sessions Court.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 transition">
+                <div class="font-semibold text-amber-300">Sec 482 BNSS (Sec 438 CrPC)</div>
+                <div class="text-slate-400 mt-0.5">Anticipatory Bail - Apprehension of arrest in non-bailable offense.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 transition">
+                <div class="font-semibold text-amber-300">Sec 528 BNSS (Sec 482 CrPC)</div>
+                <div class="text-slate-400 mt-0.5">Inherent Powers of HC for Quashing FIR / Charge Sheet / Compromise.</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 transition">
+                <div class="font-semibold text-amber-300">Sec 35 BNSS (Sec 41A CrPC)</div>
+                <div class="text-slate-400 mt-0.5">Mandatory Notice of Appearance prior to arrest for &lt;7 yrs offenses.</div>
+              </div>
+            </div>
+
+            <button onclick="switchTab('aicounsel')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-brand-gold rounded-lg border border-brand-gold/30 text-xs font-semibold flex items-center justify-center space-x-2 transition">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>Ask AI Counsel for Case Precedents</span>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: CASE POSTING LEDGER ================= -->
+      <section id="tab-cases" class="tab-content hidden space-y-6">
+        
+        <!-- Search & Category Filters Header -->
+        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row gap-4 items-center justify-between">
+          
+          <!-- Category Tabs Filter -->
+          <div class="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
+            <button onclick="filterCaseCategory('ALL')" class="case-cat-filter active-cat-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-gold text-slate-950">All Matters</button>
+            <button onclick="filterCaseCategory('Criminal')" class="case-cat-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">Criminal & Bails</button>
+            <button onclick="filterCaseCategory('Civil')" class="case-cat-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">Civil & Appeals</button>
+            <button onclick="filterCaseCategory('Writ/Constitutional')" class="case-cat-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">High Court Writs</button>
+            <button onclick="filterCaseCategory('Corporate/Tribunal')" class="case-cat-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">NCLT/DRT/Consumer</button>
+          </div>
+
+          <!-- Search Input & New Case Action -->
+          <div class="flex items-center space-x-3 w-full md:w-auto">
+            <div class="relative flex-1 md:w-64">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-500"></i>
+              <input type="text" id="case-search-input" onkeyup="handleCaseSearch()" placeholder="Search Case No, Client, Court, FIR..." class="w-full pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-brand-gold">
+            </div>
+            <button onclick="openNewCaseModal()" class="bg-brand-gold hover:bg-amber-600 text-slate-950 px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 shrink-0 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Post Case</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Case Ledger Table -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-semibold uppercase tracking-wider">
+                <tr>
+                  <th class="p-3.5">Case No. & Type</th>
+                  <th class="p-3.5">Parties & Client</th>
+                  <th class="p-3.5">Court / Forum</th>
+                  <th class="p-3.5">Stage / FIR Details</th>
+                  <th class="p-3.5">Next Hearing</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="case-ledger-tbody" class="divide-y divide-slate-800/60 font-medium">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 3: CAUSE LIST CALENDAR ================= -->
+      <section id="tab-causelist" class="tab-content hidden space-y-6">
+        
+        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif-legal font-bold text-xl text-slate-100 flex items-center space-x-2">
+              <i data-lucide="calendar" class="w-5 h-5 text-brand-gold"></i>
+              <span>Daily Cause List & Hearing Board</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Sorted by scheduled hearing dates for Advocates and Clerks.</p>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <label class="text-xs text-slate-400 font-medium">Filter Date:</label>
+            <input type="date" id="causelist-date-filter" onchange="renderCauseList()" class="bg-slate-950 border border-slate-800 rounded-lg text-xs px-3 py-1.5 text-slate-200 focus:outline-none focus:border-brand-gold">
+            <button onclick="resetCauseListDate()" class="text-xs text-brand-gold hover:underline">Show All Upcoming</button>
+          </div>
+        </div>
+
+        <!-- Cause List Cards Grid -->
+        <div id="causelist-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamically Populated -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: SMART DRAFTING (BNSS / CrPC / CIVIL) ================= -->
+      <section id="tab-drafting" class="tab-content hidden space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)]">
+          
+          <!-- Template Selector Controls (4 Cols) -->
+          <div class="lg:col-span-4 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between overflow-y-auto space-y-4">
+            <div class="space-y-4">
+              <div class="border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-slate-200 flex items-center space-x-2">
+                  <i data-lucide="file-signature" class="w-4 h-4 text-brand-gold"></i>
+                  <span>Legal Drafting Engine</span>
+                </h3>
+                <p class="text-[11px] text-slate-400">Select template to generate formatted court pleadings.</p>
+              </div>
+
+              <!-- Template Select -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Pleading Template</label>
+                <select id="drafting-template-select" onchange="loadDraftingTemplate(this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-brand-gold">
+                  <optgroup label="Criminal Matters & Bails (BNSS / CrPC)">
+                    <option value="REGULAR_BAIL">Regular Bail Petition (BNSS Sec 483 / CrPC 439)</option>
+                    <option value="ANTICIPATORY_BAIL">Anticipatory Bail Petition (BNSS Sec 482 / CrPC 438)</option>
+                    <option value="QUASH_PETITION">Quashing Petition u/s 528 BNSS (CrPC 482)</option>
+                    <option value="SEC_138_DEFENSE">Sec 138 NI Act Defense Written Statement</option>
+                  </optgroup>
+                  <optgroup label="Civil & Writs">
+                    <option value="WRIT_PETITION">High Court Writ Petition (Art 226)</option>
+                    <option value="CIVIL_INJUNCTION">Civil Injunction Petition (IA u/O 39 R 1&2 CPC)</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Form Inputs for Template -->
+              <div id="drafting-form-fields" class="space-y-3 pt-2 text-xs">
+                <!-- Dynamically Generated Inputs -->
+              </div>
+            </div>
+
+            <!-- Generate & Export Buttons -->
+            <div class="pt-3 border-t border-slate-800 space-y-2">
+              <button onclick="generateDraftText()" class="w-full py-2.5 bg-gradient-to-r from-brand-gold to-amber-600 text-slate-950 font-bold rounded-lg text-xs flex items-center justify-center space-x-2 shadow-md">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Update Document Preview</span>
+              </button>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="exportDraftPDF()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1 border border-slate-700">
+                  <i data-lucide="download" class="w-3.5 h-3.5 text-rose-400"></i>
+                  <span>Export PDF</span>
+                </button>
+                <button onclick="copyDraftToClipboard()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1 border border-slate-700">
+                  <i data-lucide="copy" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>Copy Text</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Live Preview Editor Viewport (8 Cols) -->
+          <div class="lg:col-span-8 bg-slate-950 border border-slate-800 rounded-xl p-4 overflow-y-auto flex flex-col">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+              <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center space-x-1.5">
+                <i data-lucide="eye" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Live Court Pleading Preview</span>
+              </span>
+              <span class="text-[11px] text-amber-400/80 italic">Formated for Indian Legal Green/White Paper</span>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 bg-slate-900/50 rounded-lg border border-slate-800 flex justify-center">
+              <div id="draft-paper-container" class="print-drafting-paper w-full max-w-2xl min-h-[600px] p-8 sm:p-12 text-slate-900 text-sm whitespace-pre-wrap rounded shadow-2xl border border-slate-300 font-serif leading-relaxed">
+                <!-- Live Output Rendered Here -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 5: AI COUNSEL DESK ================= -->
+      <section id="tab-aicounsel" class="tab-content hidden space-y-4">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)]">
+          
+          <!-- Quick Prompts Panel (4 Cols) -->
+          <div class="lg:col-span-4 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between overflow-y-auto space-y-4">
+            <div class="space-y-4">
+              <div class="border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-slate-200 flex items-center space-x-2">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-brand-gold"></i>
+                  <span>AI Criminal & Bail Legal Desk</span>
+                </h3>
+                <p class="text-[11px] text-slate-400">Powered AI Legal Research for Indian Statutory & Precedent Queries.</p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2">Starter Criminal Law Prompts</label>
+                <div class="space-y-2">
+                  <button onclick="useAIPrompt('Draft grounds for Anticipatory Bail in a commercial fraud / cheating case under BNSS 482 / Sec 420 IPC.')" class="w-full text-left p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 text-xs text-slate-300 hover:text-white transition">
+                    "Draft grounds for Anticipatory Bail in a commercial fraud case under BNSS 482."
+                  </button>
+                  <button onclick="useAIPrompt('What are the landmark Supreme Court benchmarks and twin conditions for bail under NDPS Act Sec 37?')" class="w-full text-left p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 text-xs text-slate-300 hover:text-white transition">
+                    "What are the landmark SC benchmarks for bail under NDPS Act Sec 37?"
+                  </button>
+                  <button onclick="useAIPrompt('Prepare argument points for quashing an FIR under Sec 528 BNSS on the grounds of monetary compromise between parties.')" class="w-full text-left p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 text-xs text-slate-300 hover:text-white transition">
+                    "Prepare argument points for quashing FIR on monetary compromise grounds."
+                  </button>
+                  <button onclick="useAIPrompt('Check statutory compliance for Sec 35 BNSS (Sec 41A CrPC) notice requirement prior to arrest as per Arnesh Kumar guidelines.')" class="w-full text-left p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-brand-gold/50 text-xs text-slate-300 hover:text-white transition">
+                    "Check statutory compliance for Sec 35 BNSS (Sec 41A CrPC) Arnesh Kumar guidelines."
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mandatory Legal Disclaimer Box -->
+            <div class="p-3 bg-amber-950/30 border border-amber-800/40 rounded-lg text-[11px] text-amber-200/80 space-y-1">
+              <div class="font-bold flex items-center space-x-1 text-brand-gold">
+                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+                <span>Advocate Research Notice</span>
+              </div>
+              <p>AI response provides preliminary legal research analysis. All case precedents and BNSS/CrPC statutory sections must be verified against official law reports (SCC/AIR/ALD) prior to court filing.</p>
+            </div>
+          </div>
+
+          <!-- Interactive AI Chat Stream Window (8 Cols) -->
+          <div class="lg:col-span-8 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+            
+            <!-- Chat Log Window -->
+            <div id="ai-chat-messages" class="flex-1 overflow-y-auto space-y-4 pr-2 mb-4">
+              <!-- AI Welcome Message -->
+              <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-gold to-amber-700 flex items-center justify-center text-slate-950 font-bold shrink-0">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 p-3.5 rounded-xl text-xs text-slate-200 max-w-2xl leading-relaxed space-y-2">
+                  <p class="font-semibold text-brand-gold">Greetings Advocate Kotha Uday Kiran Reddy,</p>
+                  <p>I am your AI Legal Research Assistant, specialized in Indian Criminal Jurisprudence (Bharatiya Nagarik Suraksha Sanhita, 2023 / CrPC, IPC / BNS, NDPS, PMLA, Sec 138 NI Act) and High Court Writ Jurisdictions.</p>
+                  <p>How can I assist your case preparation or bail strategy today?</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Box -->
+            <div class="relative">
+              <textarea id="ai-chat-input" rows="2" placeholder="Ask a legal query, statutory section, or bail argument strategy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 pr-12 text-xs text-slate-100 focus:outline-none focus:border-brand-gold resize-none"></textarea>
+              <button onclick="sendAIChatQuery()" class="absolute right-2.5 bottom-3.5 p-2 bg-brand-gold hover:bg-amber-600 text-slate-950 rounded-lg transition shadow-md">
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= MODAL 1: NEW / EDIT CASE MODAL ================= -->
+  <div id="case-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+        <h3 id="modal-title" class="font-bold text-slate-100 text-sm flex items-center space-x-2">
+          <i data-lucide="briefcase" class="w-4 h-4 text-brand-gold"></i>
+          <span>Post New Case into Advocate Ledger</span>
+        </h3>
+        <button onclick="closeCaseModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="case-form" onsubmit="handleSaveCase(event)" class="p-5 overflow-y-auto space-y-4 text-xs">
+        <input type="hidden" id="case-id-input">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Case Category *</label>
+            <select id="case-category-input" onchange="updateCaseTypeDropdowns()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+              <option value="Criminal">Criminal Practice & Bails</option>
+              <option value="Civil">Civil Suits & Appeals</option>
+              <option value="Writ/Constitutional">High Court Writ / Constitutional</option>
+              <option value="Corporate/Tribunal">Tribunal (NCLT/DRT/Consumer/RERA)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Case Type / Petition *</label>
+            <select id="case-type-input" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+              <!-- Dynamically Filled -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Court / Forum *</label>
+            <select id="case-court-input" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+              <!-- Filled with Courts & Tribunals list -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Case No. & Year *</label>
+            <input type="text" id="case-number-input" required placeholder="e.g. Crl.P. No. 4582 / 2026" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Client Name & Party Side *</label>
+            <input type="text" id="case-client-input" required placeholder="e.g. K. Venkat Reddy (Petitioner / Accused)" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Opposite Party Name</label>
+            <input type="text" id="case-opposite-input" placeholder="e.g. State of Telangana / Respondent" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">FIR / Crime No. & PS (If Criminal)</label>
+            <input type="text" id="case-fir-input" placeholder="e.g. Crime No. 112/2026, Jubilee Hills PS" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Next Hearing Date *</label>
+            <input type="date" id="case-date-input" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Current Case Stage *</label>
+            <input type="text" id="case-stage-input" placeholder="e.g. Arguments on Bail / Police Report Submitted" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Case Status</label>
+            <select id="case-status-input" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold">
+              <option value="Pending / Active">Pending / Active</option>
+              <option value="Urgent Bail Listing">Urgent Bail Listing</option>
+              <option value="Reserved for Orders">Reserved for Orders</option>
+              <option value="Disposed / Allowed">Disposed / Allowed</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Advocate Notes / Key Precedents</label>
+          <textarea id="case-notes-input" rows="2" placeholder="Important grounds, bail conditions compliance, case laws..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-slate-200 focus:border-brand-gold"></textarea>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+          <button type="button" onclick="closeCaseModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700">Cancel</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-brand-gold hover:bg-amber-600 text-slate-950 font-bold shadow-md">Save Case Posting</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: 1-DAY HEARING NOTIFICATION & WHATSAPP DRAFTING ================= -->
+  <div id="notification-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
+      <div class="p-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center space-x-2">
+          <i data-lucide="bell" class="w-4 h-4 text-brand-gold"></i>
+          <span>1-Day Hearing Alerts & WhatsApp Client Messenger</span>
+        </h3>
+        <button onclick="toggleNotificationModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[70vh]">
+        <p class="text-slate-400">Cases scheduled for hearing within 24 hours requiring client updates:</p>
+        
+        <div id="notification-list-container" class="space-y-3">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: AUDIT LOG MODAL ================= -->
+  <div id="audit-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col">
+      <div class="p-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+        <h3 class="font-bold text-slate-100 text-sm flex items-center space-x-2">
+          <i data-lucide="history" class="w-4 h-4 text-brand-gold"></i>
+          <span>System Audit Trail & RBAC Log</span>
+        </h3>
+        <button onclick="toggleAuditModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto max-h-[60vh] space-y-2 text-xs">
+        <div id="audit-log-container" class="space-y-2">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT LOGIC -->
+  <script>
+    // Master Lists for Courts & Tribunals across Telangana & All India
+    const MASTER_COURTS = [
+      "Supreme Court of India",
+      "High Court for the State of Telangana",
+      "High Court of Judicature at Hyderabad",
+      "High Court of Judicature at Bombay",
+      "High Court of Delhi",
+      "High Court of Judicature at Madras",
+      "High Court of Karnataka",
+      "Metropolitan Sessions Court, Nampally, Hyderabad",
+      "Principal District & Sessions Court, Ranga Reddy at L.B. Nagar",
+      "City Civil Court, Hyderabad",
+      "Cyberabad Special Criminal Courts",
+      "CBI Special Courts / ACB Courts, Hyderabad",
+      "Metropolitan Magistrate / JCJ Court, Secunderabad",
+      "Metropolitan Magistrate / JCJ Court, L.B. Nagar",
+      "Metropolitan Magistrate / JCJ Court, Cyberabad / Kukatpally",
+      "Metropolitan Magistrate / JCJ Court, Malkajgiri",
+      "NCLT Hyderabad Bench",
+      "NCLAT Chennai / New Delhi",
+      "Debt Recovery Tribunal (DRT-I / DRT-II) Hyderabad",
+      "Telangana State Consumer Disputes Redressal Commission",
+      "District Consumer Forum, Hyderabad / Ranga Reddy",
+      "Telangana Real Estate Regulatory Authority (TG RERA)",
+      "Real Estate Appellate Tribunal (REAT) Hyderabad",
+      "Central Administrative Tribunal (CAT) Hyderabad Bench",
+      "Telangana VAT / GST Appellate Tribunal"
+    ];
+
+    const CASE_TYPES = {
+      "Criminal": [
+        "Regular Bail Application (u/s 483 BNSS / 439 CrPC)",
+        "Anticipatory Bail Application (u/s 482 BNSS / 438 CrPC)",
+        "Interim Bail Petition",
+        "Cancellation of Bail Petition",
+        "Criminal Petition u/s 528 BNSS (Sec 482 CrPC Quashing)",
+        "Criminal Appeal",
+        "Criminal Revision Petition",
+        "Special Leave Petition (Criminal)",
+        "Cognizance & Remand Petitions",
+        "FIR Challenge / Quashing Petition",
+        "NDPS Act Special Bail Petition",
+        "PMLA / ED Bail Petition",
+        "Sec 138 NI Act (Cheque Dishonour Case)",
+        "Cyber Crime Criminal Proceedings",
+        "POCSO & Women Safety Matter"
+      ],
+      "Civil": [
+        "Original Suit (O.S.)",
+        "First Appeal (A.S.)",
+        "Second Appeal (S.A.)",
+        "Civil Revision Petition (C.R.P.)",
+        "Execution Petition (E.P.)",
+        "Interlocutory Application (I.A. CPC)"
+      ],
+      "Writ/Constitutional": [
+        "Writ Petition (Civil) - Art 226",
+        "Writ Petition (Criminal) - Art 226",
+        "Writ Appeal (W.A.)",
+        "Contempt Petition"
+      ],
+      "Corporate/Tribunal": [
+        "NCLT Insolvency Application (IBC)",
+        "DRT OA / SA Recovery Petition",
+        "Consumer Complaint (CC)",
+        "TG RERA Complaint"
+      ]
+    };
+
+    // Pre-populated Sample Ledger Data with Active Criminal Bails & Court Matters
+    const INITIAL_CASES = [
+      {
+        id: "case-101",
+        category: "Criminal",
+        type: "Regular Bail Application (u/s 483 BNSS / 439 CrPC)",
+        court: "High Court for the State of Telangana",
+        number: "Crl.P. No. 3482 / 2026",
+        client: "A1 - K. Ramesh Kumar",
+        opposite: "State of Telangana rep. by Public Prosecutor",
+        fir: "Crime No. 142/2026, Banjara Hills PS (Sec 316 BNS / 420 IPC)",
+        date: getOffsetDate(0), // Today
+        stage: "Arguments on Regular Bail / Parity",
+        status: "Urgent Bail Listing",
+        notes: "Co-accused A2 granted bail by High Court. Parity ground highlighted. Permanent resident, no flight risk."
+      },
+      {
+        id: "case-102",
+        category: "Criminal",
+        type: "Anticipatory Bail Application (u/s 482 BNSS / 438 CrPC)",
+        court: "Metropolitan Sessions Court, Nampally, Hyderabad",
+        number: "Crl.M.P. No. 892 / 2026",
+        client: "Smt. V. Anitha & Anr",
+        opposite: "State of Telangana / Jubilee Hills PS",
+        fir: "Crime No. 88/2026, Jubilee Hills PS",
+        date: getOffsetDate(1), // Tomorrow
+        stage: "Notice to Public Prosecutor / Interim Protection",
+        status: "Urgent Bail Listing",
+        notes: "Apprehension of arrest in commercial dispute turned criminal complaint. Notice served under Sec 35 BNSS."
+      },
+      {
+        id: "case-103",
+        category: "Criminal",
+        type: "Sec 138 NI Act (Cheque Dishonour Case)",
+        court: "Metropolitan Magistrate / JCJ Court, Cyberabad / Kukatpally",
+        number: "C.C. No. 1204 / 2025",
+        client: "Sri Balaji Traders (Complainant)",
+        opposite: "M/s Apex Infra Projects",
+        fir: "N/A (Private Complaint u/s 138 NI Act)",
+        date: getOffsetDate(1), // Tomorrow
+        stage: "Cross-Examination of PW-1",
+        status: "Pending / Active",
+        notes: "Cheque bounce amount Rs. 45 Lakhs. Statutory demand notice served within limitation."
+      },
+      {
+        id: "case-104",
+        category: "Writ/Constitutional",
+        type: "Writ Petition (Civil) - Art 226",
+        court: "High Court for the State of Telangana",
+        number: "W.P. No. 18940 / 2025",
+        client: "S. Chandra Sekhar",
+        opposite: "State of Telangana rep. by Revenue Principal Secy",
+        fir: "N/A",
+        date: getOffsetDate(3),
+        stage: "For Counters & Hearing",
+        status: "Pending / Active",
+        notes: "Challenging arbitrary illegal land acquisition without notice in Ranga Reddy District."
+      }
+    ];
+
+    // State Management
+    let currentRole = "Senior Counsel";
+    let cases = [];
+    let auditLogs = [];
+    let activeCategoryFilter = "ALL";
+
+    // Helper: Date string generator
+    function getOffsetDate(daysOffset) {
+      const d = new Date();
+      d.setDate(d.getDate() + daysOffset);
+      return d.toISOString().split('T')[0];
+    }
+
+    // On Load Initializer
+    window.onload = function() {
+      // Load cases from localStorage or init default
+      const savedCases = localStorage.getItem('lexvault_cases');
+      if (savedCases) {
+        try { cases = JSON.parse(savedCases); } catch(e) { cases = INITIAL_CASES; }
+      } else {
+        cases = INITIAL_CASES;
+        saveCasesToStorage();
+      }
+
+      // Initialize Audit Log
+      addAuditEntry("System initialized with Telangana HC & Criminal Practice modules.");
+
+      // Render Lucide Icons
+      lucide.createIcons();
+
+      // Populate Court & Type Select Dropdowns
+      populateCourtDropdowns();
+      updateCaseTypeDropdowns();
+
+      // Initial Renders
+      renderDashboardStats();
+      renderCaseLedger();
+      renderCauseList();
+      renderNotificationAlerts();
+      loadDraftingTemplate('REGULAR_BAIL');
+
+      // Set default Causelist filter to empty
+      document.getElementById('causelist-date-filter').value = '';
+    };
+
+    function saveCasesToStorage() {
+      localStorage.setItem('lexvault_cases', JSON.stringify(cases));
+    }
+
+    function addAuditEntry(actionText) {
+      const entry = {
+        timestamp: new Date().toLocaleString(),
+        user: currentRole,
+        action: actionText
+      };
+      auditLogs.unshift(entry);
+      renderAuditLogs();
+    }
+
+    function changeUserRole(role) {
+      currentRole = role;
+      addAuditEntry(`Switched active user role to: ${role}`);
+    }
+
+    // View Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active-tab', 'text-brand-gold', 'bg-slate-800');
+        btn.classList.add('text-slate-400');
+      });
+
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.classList.add('active-tab', 'text-brand-gold', 'bg-slate-800');
+        activeNav.classList.remove('text-slate-400');
+      }
+
+      if (tabId === 'causelist') renderCauseList();
+      if (tabId === 'dashboard') renderDashboardStats();
+    }
+
+    // Populate Master Courts into Dropdowns
+    function populateCourtDropdowns() {
+      const courtSelect = document.getElementById('case-court-input');
+      courtSelect.innerHTML = MASTER_COURTS.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function updateCaseTypeDropdowns() {
+      const cat = document.getElementById('case-category-input').value;
+      const typeSelect = document.getElementById('case-type-input');
+      const types = CASE_TYPES[cat] || CASE_TYPES['Criminal'];
+      typeSelect.innerHTML = types.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
+    // RENDER: Dashboard Stats & Cards
+    function renderDashboardStats() {
+      document.getElementById('stat-total-cases').innerText = cases.length;
+      
+      const crimCases = cases.filter(c => c.category === 'Criminal').length;
+      document.getElementById('stat-criminal-cases').innerText = crimCases;
+
+      const todayStr = getOffsetDate(0);
+      const tomorrowStr = getOffsetDate(1);
+
+      const todayCount = cases.filter(c => c.date === todayStr).length;
+      const tomorrowCount = cases.filter(c => c.date === tomorrowStr).length;
+
+      document.getElementById('stat-today-hearings').innerText = todayCount;
+      document.getElementById('stat-tomorrow-hearings').innerText = tomorrowCount;
+
+      // Render Urgent Bails Container
+      const urgentBails = cases.filter(c => c.category === 'Criminal' || c.status === 'Urgent Bail Listing');
+      const bailsContainer = document.getElementById('urgent-bails-container');
+
+      if (urgentBails.length === 0) {
+        bailsContainer.innerHTML = `<div class="text-slate-500 text-xs italic py-4 text-center">No urgent bail petitions listed.</div>`;
+      } else {
+        bailsContainer.innerHTML = urgentBails.map(c => `
+          <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex items-center justify-between hover:border-brand-gold/40 transition">
+            <div class="space-y-1">
+              <div class="flex items-center space-x-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">${c.type}</span>
+                <span class="text-xs font-bold text-amber-200">${c.number}</span>
+              </div>
+              <p class="text-xs text-slate-200 font-semibold">${c.client} vs ${c.opposite}</p>
+              <p class="text-[11px] text-slate-400"><i data-lucide="map-pin" class="w-3 h-3 inline mr-1 text-brand-gold"></i>${c.court}</p>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="text-xs font-bold ${c.date === todayStr ? 'text-rose-400 animate-pulse' : 'text-amber-300'}">${c.date === todayStr ? 'TODAY' : c.date}</span>
+              <p class="text-[10px] text-slate-400 mt-0.5">${c.stage}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // RENDER: Case Ledger Table
+    function renderCaseLedger() {
+      const tbody = document.getElementById('case-ledger-tbody');
+      const searchTerm = (document.getElementById('case-search-input').value || '').toLowerCase();
+
+      let filtered = cases.filter(c => {
+        const matchesCategory = activeCategoryFilter === 'ALL' || c.category === activeCategoryFilter;
+        const matchesSearch = c.number.toLowerCase().includes(searchTerm) ||
+                              c.client.toLowerCase().includes(searchTerm) ||
+                              c.court.toLowerCase().includes(searchTerm) ||
+                              (c.fir && c.fir.toLowerCase().includes(searchTerm));
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">No matching case records found in office ledger.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(c => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3.5">
+            <div class="font-bold text-slate-100">${c.number}</div>
+            <div class="text-[10px] text-brand-gold mt-0.5">${c.type}</div>
+          </td>
+          <td class="p-3.5">
+            <div class="text-slate-200 font-semibold">${c.client}</div>
+            <div class="text-[11px] text-slate-400">vs ${c.opposite || 'State'}</div>
+          </td>
+          <td class="p-3.5 text-slate-300 max-w-[180px] truncate" title="${c.court}">
+            ${c.court}
+          </td>
+          <td class="p-3.5">
+            <div class="text-slate-200">${c.stage}</div>
+            ${c.fir ? `<div class="text-[10px] text-slate-400 italic">${c.fir}</div>` : ''}
+          </td>
+          <td class="p-3.5 font-semibold text-amber-300">
+            ${c.date}
+          </td>
+          <td class="p-3.5">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${c.status.includes('Urgent') ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-slate-800 text-slate-300'}">
+              ${c.status}
+            </span>
+          </td>
+          <td class="p-3.5 text-right space-x-1">
+            <button onclick="editCase('${c.id}')" class="p-1.5 rounded hover:bg-slate-700 text-slate-300" title="Edit Case">
+              <i data-lucide="edit-3" class="w-4 h-4"></i>
+            </button>
+            <button onclick="deleteCase('${c.id}')" class="p-1.5 rounded hover:bg-rose-900/50 text-rose-400" title="Delete Case">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterCaseCategory(category) {
+      activeCategoryFilter = category;
+      document.querySelectorAll('.case-cat-filter').forEach(btn => {
+        btn.classList.remove('bg-brand-gold', 'text-slate-950');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      event.target.classList.remove('bg-slate-800', 'text-slate-300');
+      event.target.classList.add('bg-brand-gold', 'text-slate-950');
+      renderCaseLedger();
+    }
+
+    function handleCaseSearch() {
+      renderCaseLedger();
+    }
+
+    // RENDER: Cause List Calendar
+    function renderCauseList() {
+      const container = document.getElementById('causelist-container');
+      const dateFilter = document.getElementById('causelist-date-filter').value;
+
+      let list = [...cases];
+      if (dateFilter) {
+        list = list.filter(c => c.date === dateFilter);
+      }
+
+      // Sort by Date
+      list.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="col-span-full p-8 bg-slate-900/50 border border-slate-800 rounded-xl text-center text-slate-500 italic">No cause list hearings scheduled for selected date filter.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(c => `
+        <div class="bg-slate-900/90 border border-slate-800 hover:border-brand-gold/40 rounded-xl p-4 flex flex-col justify-between space-y-3 transition">
+          <div class="space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-bold text-amber-300 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded">${c.number}</span>
+              <span class="text-[11px] font-bold text-slate-300 bg-slate-800 px-2 py-0.5 rounded">${c.date}</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-100">${c.client} vs ${c.opposite}</h4>
+            <p class="text-[11px] text-slate-400 flex items-center">
+              <i data-lucide="building" class="w-3 h-3 mr-1 text-brand-gold"></i>
+              ${c.court}
+            </p>
+            <div class="p-2 rounded bg-slate-950 text-[11px] border border-slate-800">
+              <span class="text-slate-400">Stage:</span> <span class="text-slate-200 font-semibold">${c.stage}</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[11px]">
+            <span class="text-slate-400">${c.category}</span>
+            <button onclick="openWhatsAppDraft('${c.id}')" class="text-emerald-400 hover:underline flex items-center space-x-1">
+              <i data-lucide="message-square" class="w-3 h-3"></i>
+              <span>WhatsApp Update</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function resetCauseListDate() {
+      document.getElementById('causelist-date-filter').value = '';
+      renderCauseList();
+    }
+
+    // MODAL & CASE CRUD
+    function openNewCaseModal() {
+      document.getElementById('modal-title').innerText = "Post New Case into Advocate Ledger";
+      document.getElementById('case-id-input').value = '';
+      document.getElementById('case-form').reset();
+      updateCaseTypeDropdowns();
+      document.getElementById('case-modal').classList.remove('hidden');
+    }
+
+    function closeCaseModal() {
+      document.getElementById('case-modal').classList.add('hidden');
+    }
+
+    function handleSaveCase(e) {
+      e.preventDefault();
+      
+      const id = document.getElementById('case-id-input').value || 'case-' + Date.now();
+      const newCase = {
+        id: id,
+        category: document.getElementById('case-category-input').value,
+        type: document.getElementById('case-type-input').value,
+        court: document.getElementById('case-court-input').value,
+        number: document.getElementById('case-number-input').value,
+        client: document.getElementById('case-client-input').value,
+        opposite: document.getElementById('case-opposite-input').value,
+        fir: document.getElementById('case-fir-input').value,
+        date: document.getElementById('case-date-input').value,
+        stage: document.getElementById('case-stage-input').value,
+        status: document.getElementById('case-status-input').value,
+        notes: document.getElementById('case-notes-input').value
+      };
+
+      const existingIndex = cases.findIndex(c => c.id === id);
+      if (existingIndex >= 0) {
+        cases[existingIndex] = newCase;
+        addAuditEntry(`Updated Case record: ${newCase.number}`);
+      } else {
+        cases.push(newCase);
+        addAuditEntry(`Posted New Case record: ${newCase.number}`);
+      }
+
+      saveCasesToStorage();
+      closeCaseModal();
+      renderDashboardStats();
+      renderCaseLedger();
+      renderCauseList();
+      renderNotificationAlerts();
+    }
+
+    function editCase(id) {
+      const c = cases.find(x => x.id === id);
+      if (!c) return;
+
+      document.getElementById('modal-title').innerText = "Edit Case Details";
+      document.getElementById('case-id-input').value = c.id;
+      document.getElementById('case-category-input').value = c.category;
+      updateCaseTypeDropdowns();
+      document.getElementById('case-type-input').value = c.type;
+      document.getElementById('case-court-input').value = c.court;
+      document.getElementById('case-number-input').value = c.number;
+      document.getElementById('case-client-input').value = c.client;
+      document.getElementById('case-opposite-input').value = c.opposite || '';
+      document.getElementById('case-fir-input').value = c.fir || '';
+      document.getElementById('case-date-input').value = c.date;
+      document.getElementById('case-stage-input').value = c.stage;
+      document.getElementById('case-status-input').value = c.status;
+      document.getElementById('case-notes-input').value = c.notes || '';
+
+      document.getElementById('case-modal').classList.remove('hidden');
+    }
+
+    function deleteCase(id) {
+      if (confirm("Are you sure you want to remove this case from the ledger?")) {
+        const deletedCase = cases.find(c => c.id === id);
+        cases = cases.filter(c => c.id !== id);
+        saveCasesToStorage();
+        addAuditEntry(`Deleted case record: ${deletedCase ? deletedCase.number : id}`);
+        renderDashboardStats();
+        renderCaseLedger();
+        renderCauseList();
+        renderNotificationAlerts();
+      }
+    }
+
+    // 1-DAY NOTIFICATION BELL & WHATSAPP DRAFTING
+    function toggleNotificationModal() {
+      const modal = document.getElementById('notification-modal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        renderNotificationAlerts();
+      }
+    }
+
+    function renderNotificationAlerts() {
+      const todayStr = getOffsetDate(0);
+      const tomorrowStr = getOffsetDate(1);
+
+      const urgentList = cases.filter(c => c.date === todayStr || c.date === tomorrowStr);
+      document.getElementById('notification-badge').innerText = urgentList.length;
+
+      const container = document.getElementById('notification-list-container');
+      if (urgentList.length === 0) {
+        container.innerHTML = `<div class="text-slate-500 text-xs italic text-center py-4">No hearings scheduled for today or tomorrow.</div>`;
+        return;
+      }
+
+      container.innerHTML = urgentList.map(c => `
+        <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-amber-300">${c.number}</span>
+            <span class="text-[10px] px-2 py-0.5 font-bold rounded ${c.date === todayStr ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}">${c.date === todayStr ? 'HEARING TODAY' : 'HEARING TOMORROW'}</span>
+          </div>
+          <p class="text-slate-200">${c.client} vs ${c.opposite}</p>
+          <p class="text-[11px] text-slate-400">${c.court}</p>
+          <div class="pt-2 flex justify-end">
+            <button onclick="openWhatsAppDraft('${c.id}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[11px] font-bold flex items-center space-x-1">
+              <i data-lucide="message-square" class="w-3 h-3"></i>
+              <span>Draft Client WhatsApp</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function openWhatsAppDraft(caseId) {
+      const c = cases.find(x => x.id === caseId);
+      if (!c) return;
+
+      const message = `*OFFICE OF ADVOCATE KOTHA UDAY KIRAN REDDY*%0A%0A*COURT HEARING NOTICE*%0A*Case:* ${c.number}%0A*Court:* ${c.court}%0A*Client:* ${c.client}%0A*Hearing Date:* ${c.date}%0A*Stage:* ${c.stage}%0A%0APlease ensure required presence/documents are prepared. Contact office for further details.`;
+      window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+      addAuditEntry(`Generated WhatsApp client alert for ${c.number}`);
+    }
+
+    // AUDIT LOG SYSTEM
+    function toggleAuditModal() {
+      document.getElementById('audit-modal').classList.toggle('hidden');
+    }
+
+    function renderAuditLogs() {
+      const container = document.getElementById('audit-log-container');
+      container.innerHTML = auditLogs.map(l => `
+        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 flex justify-between items-center text-[11px]">
+          <div>
+            <span class="font-semibold text-brand-gold">[${l.user}]</span>
+            <span class="text-slate-200 ml-1.5">${l.action}</span>
+          </div>
+          <span class="text-[10px] text-slate-500 shrink-0 ml-2">${l.timestamp}</span>
+        </div>
+      `).join('');
+    }
+
+    // ================= SMART DRAFTING ENGINE (BNSS / CrPC) =================
+    const DRAFT_TEMPLATES = {
+      REGULAR_BAIL: {
+        title: "Regular Bail Petition (BNSS Sec 483 / CrPC 439)",
+        fields: [
+          { id: "court_name", label: "Court Name", default: "IN THE COURT OF THE METROPOLITAN SESSIONS JUDGE AT HYDERABAD" },
+          { id: "crl_no", label: "Crl.M.P / Bail No.", default: "CRL.M.P. NO. ______ OF 2026" },
+          { id: "fir_no", label: "FIR / Crime No. & PS", default: "Crime No. 142/2026 of Jubilee Hills PS" },
+          { id: "petitioner", label: "Petitioner / Accused Name", default: "K. Ramesh Kumar (A-1)" },
+          { id: "respondent", label: "Respondent", default: "State of Telangana rep. by Public Prosecutor" },
+          { id: "offences", label: "Offences Charged", default: "Sec 316 BNS / Sec 420, 406 IPC" }
+        ],
+        generate: (f) => `
+${f.court_name.toUpperCase()}
+
+${f.crl_no}
+IN
+CRIME NO. ${f.fir_no.toUpperCase()}
+
+IN THE MATTER OF:
+${f.petitioner}
+... PETITIONER / ACCUSED
+
+AND:
+${f.respondent}
+... RESPONDENT / STATE
+
+PETITION FILED UNDER SECTION 483 OF BHARATIYA NAGARIK SURAKSHA SANHITA, 2023 (SEC 439 Cr.P.C.) FOR GRANT OF REGULAR BAIL
+
+MOST RESPECTFULLY SHOWETH:
+
+1. The Petitioner herein is the Accused (A-1) in Crime No. ${f.fir_no} registered for alleged offences under ${f.offences}.
+
+2. The Petitioner was remanded to judicial custody on ________ and has been languishing in jail since then.
+
+3. GROUNDS FOR BAIL:
+   a) That the Petitioner is completely innocent of the alleged offences and has been falsely implicated due to civil rivalries.
+   b) That major portion of the investigation is completed and Petitioner's further custodial interrogation is no longer required.
+   c) PARITY: That co-accused (A-2) has already been granted bail by this Hon'ble Court.
+   d) NO FLIGHT RISK: The Petitioner is a permanent resident having deep roots in society and is ready to abide by any stringent bail conditions.
+
+4. PRAYER:
+It is therefore prayed that this Hon'ble Court may be pleased to enlarge the Petitioner on Regular Bail in Crime No. ${f.fir_no}, on such terms and conditions as deemed fit in the interest of justice.
+
+ADVOCATE FOR PETITIONER
+KOTHA UDAY KIRAN REDDY
+Advocate & Legal Consultant
+`
+      },
+
+      ANTICIPATORY_BAIL: {
+        title: "Anticipatory Bail Petition (BNSS Sec 482 / CrPC 438)",
+        fields: [
+          { id: "court_name", label: "Court Name", default: "IN THE HIGH COURT FOR THE STATE OF TELANGANA AT HYDERABAD" },
+          { id: "crl_p_no", label: "Criminal Petition No.", default: "CRIMINAL PETITION NO. ______ OF 2026" },
+          { id: "fir_no", label: "Crime / FIR Details", default: "Crime No. 88/2026 of Cyberabad PS" },
+          { id: "petitioner", label: "Petitioner Name", default: "Smt. V. Anitha & Another" },
+          { id: "offences", label: "Alleged Offences", default: "Sec 318(4) BNS / Sec 420 IPC" }
+        ],
+        generate: (f) => `
+${f.court_name.toUpperCase()}
+
+${f.crl_p_no}
+
+IN THE MATTER OF:
+${f.petitioner}
+... PETITIONER(S) / ACCUSED
+
+AND:
+State of Telangana rep. by Public Prosecutor
+... RESPONDENT / STATE
+
+PETITION FILED UNDER SECTION 482 BHARATIYA NAGARIK SURAKSHA SANHITA, 2023 (SEC 438 Cr.P.C.) FOR ANTICIPATORY BAIL
+
+MOST RESPECTFULLY SHOWETH:
+
+1. The Petitioners reasonably apprehend arrest by the police in connection with ${f.fir_no} for offences under ${f.offences}.
+
+2. GROUNDS FOR ANTICIPATORY BAIL:
+   a) That the alleged dispute is purely of a civil nature arising out of commercial contracts.
+   b) Non-compliance of Section 35 BNSS (Sec 41A CrPC) mandatory notice requirement prior to arrest.
+   c) The Petitioners undertake to cooperate with the Investigating Officer as and when required.
+
+PRAYER:
+Pleased to grant Anticipatory Bail directing police to release Petitioners in the event of arrest.
+
+ADVOCATE FOR PETITIONER
+KOTHA UDAY KIRAN REDDY
+`
+      },
+
+      QUASH_PETITION: {
+        title: "Quashing Petition u/s 528 BNSS (CrPC 482)",
+        fields: [
+          { id: "court_name", label: "Court", default: "IN THE HIGH COURT FOR THE STATE OF TELANGANA AT HYDERABAD" },
+          { id: "crl_p", label: "Crl.P. No.", default: "CRIMINAL PETITION NO. ______ OF 2026" },
+          { id: "petitioner", label: "Petitioner", default: "Sri M. Ramakrishna" },
+          { id: "fir_no", label: "FIR / CC No.", default: "FIR No. 205/2025 or CC No. 44/2026" }
+        ],
+        generate: (f) => `
+${f.court_name.toUpperCase()}
+
+${f.crl_p}
+
+IN THE MATTER OF:
+${f.petitioner} ... PETITIONER
+VERSUS
+State of Telangana & Anr. ... RESPONDENTS
+
+PETITION UNDER SECTION 528 OF BHARATIYA NAGARIK SURAKSHA SANHITA, 2023 (SEC 482 Cr.P.C.) TO QUASH PROCEEDINGS
+
+GROUNDS:
+1. That the parties have entered into a full and final monetary compromise settlement.
+2. Continuation of criminal proceedings would amount to abuse of process of Court.
+
+PRAYER:
+Pleased to quash proceedings in ${f.fir_no}.
+
+ADVOCATE FOR PETITIONER
+KOTHA UDAY KIRAN REDDY
+`
+      },
+
+      SEC_138_DEFENSE: {
+        title: "Sec 138 NI Act Defense Statement",
+        fields: [
+          { id: "court_name", label: "Court", default: "IN THE COURT OF XIV METROPOLITAN MAGISTRATE AT HYDERABAD" },
+          { id: "cc_no", label: "CC No.", default: "C.C. NO. 1204 OF 2025" },
+          { id: "accused", label: "Accused Name", default: "M/s Apex Infra Projects rep. by Managing Director" }
+        ],
+        generate: (f) => `
+${f.court_name.toUpperCase()}
+${f.cc_no}
+
+WRITTEN DEFENSE STATEMENT ON BEHALF OF ACCUSED:
+${f.accused}
+
+DEFENSE GROUNDS:
+1. Cheque was issued solely as security and not towards legally enforceable debt.
+2. Statutory demand notice was not served at the correct address.
+
+ADVOCATE FOR ACCUSED
+KOTHA UDAY KIRAN REDDY
+`
+      }
+    };
+
+    let currentTemplateKey = 'REGULAR_BAIL';
+
+    function loadDraftingTemplate(key) {
+      currentTemplateKey = key;
+      const tpl = DRAFT_TEMPLATES[key];
+      const formContainer = document.getElementById('drafting-form-fields');
+
+      formContainer.innerHTML = tpl.fields.map(f => `
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">${f.label}</label>
+          <input type="text" id="field-${f.id}" value="${f.default}" oninput="generateDraftText()" class="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-xs text-slate-200 focus:border-brand-gold">
+        </div>
+      `).join('');
+
+      generateDraftText();
+    }
+
+    function generateDraftText() {
+      const tpl = DRAFT_TEMPLATES[currentTemplateKey];
+      let fieldValues = {};
+      tpl.fields.forEach(f => {
+        const input = document.getElementById(`field-${f.id}`);
+        fieldValues[f.id] = input ? input.value : f.default;
+      });
+
+      const paper = document.getElementById('draft-paper-container');
+      paper.innerText = tpl.generate(fieldValues);
+    }
+
+    function exportDraftPDF() {
+      const element = document.getElementById('draft-paper-container');
+      const opt = {
+        margin:       0.5,
+        filename:     `Legal_Draft_${currentTemplateKey}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+      addAuditEntry(`Exported PDF for ${DRAFT_TEMPLATES[currentTemplateKey].title}`);
+    }
+
+    function copyDraftToClipboard() {
+      const text = document.getElementById('draft-paper-container').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Pleading text copied to clipboard!");
+        addAuditEntry("Copied draft pleading to clipboard");
+      });
+    }
+
+    // ================= AI COUNSEL DESK (STREAMING SIMULATION) =================
+    function useAIPrompt(promptText) {
+      document.getElementById('ai-chat-input').value = promptText;
+      sendAIChatQuery();
+    }
+
+    function sendAIChatQuery() {
+      const inputEl = document.getElementById('ai-chat-input');
+      const query = inputEl.value.trim();
+      if (!query) return;
+
+      const chatContainer = document.getElementById('ai-chat-messages');
+
+      // Append User Query
+      chatContainer.innerHTML += `
+        <div class="flex items-start space-x-3 justify-end">
+          <div class="bg-brand-700/60 border border-brand-gold/30 p-3 rounded-xl text-xs text-slate-100 max-w-xl">
+            ${query}
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-brand-gold font-bold shrink-0">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </div>
+        </div>
+      `;
+
+      inputEl.value = '';
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // Append AI Response Shell
+      const aiResponseId = 'ai-resp-' + Date.now();
+      chatContainer.innerHTML += `
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-gold to-amber-700 flex items-center justify-center text-slate-950 font-bold shrink-0">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <div id="${aiResponseId}" class="bg-slate-950 border border-slate-800 p-3.5 rounded-xl text-xs text-slate-200 max-w-2xl leading-relaxed space-y-2">
+            <span class="inline-flex items-center text-brand-gold text-[11px] animate-pulse">
+              <i data-lucide="loader" class="w-3 h-3 mr-1 animate-spin"></i> Researching Statutory Provisions & SC Benchmarks...
+            </span>
+          </div>
+        </div>
+      `;
+
+      lucide.createIcons();
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // Simulate AI Legal Stream Output
+      setTimeout(() => {
+        const respEl = document.getElementById(aiResponseId);
+        let replyContent = "";
+
+        if (query.toLowerCase().includes("anticipatory bail") || query.toLowerCase().includes("482 bnss")) {
+          replyContent = `
+            <p class="font-bold text-amber-300">LEGAL ANALYSIS: ANTICIPATORY BAIL UNDER SEC 482 BNSS (SEC 438 CrPC)</p>
+            <p><strong>1. Key Statutory Grounds:</strong></p>
+            <ul class="list-disc pl-4 space-y-1 text-slate-300">
+              <li>Apprehension of arrest must be based on concrete facts rather than mere vague fear.</li>
+              <li>Civil dispute given criminal color (Commercial transaction turned cheating case).</li>
+              <li>Non-compliance of Sec 35 BNSS (Sec 41A CrPC) mandatory notice requirement prior to arrest as per Arnesh Kumar v. State of Bihar.</li>
+            </ul>
+            <p><strong>2. SC Precedents:</strong> <i>Sushila Aggarwal v. State (NCT of Delhi) (2020 5 SCC 1)</i> - Anticipatory bail can continue till end of trial.</p>
+          `;
+        } else if (query.toLowerCase().includes("ndps")) {
+          replyContent = `
+            <p class="font-bold text-amber-300">LEGAL ANALYSIS: BAIL BENCHMARKS UNDER NDPS ACT SEC 37</p>
+            <p><strong>Twin Conditions for Commercial Quantity:</strong></p>
+            <ul class="list-disc pl-4 space-y-1 text-slate-300">
+              <li>Court must be satisfied reasonable grounds exist that accused is NOT guilty.</li>
+              <li>Accused is not likely to commit any offence while on bail.</li>
+              <li><i>State of Kerala v. Rajesh (2020)</i> - Section 37 provisions are mandatory.</li>
+            </ul>
+          `;
+        } else {
+          replyContent = `
+            <p class="font-bold text-amber-300">LEGAL RESEARCH MEMORANDUM</p>
+            <p><strong>Re: ${query}</strong></p>
+            <p>1. Under Bharatiya Nagarik Suraksha Sanhita (BNSS), 2023, procedure for bail and quashing mandates strict compliance with procedural safeguards.</p>
+            <p>2. Precedent Ground: Supreme Court in landmark rulings emphasizes personal liberty under Article 21 where investigation does not warrant custodial interrogation.</p>
+          `;
+        }
+
+        respEl.innerHTML = replyContent;
+        addAuditEntry(`AI Counsel Query processed for Advocate Uday Kiran Reddy.`);
+        lucide.createIcons();
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
